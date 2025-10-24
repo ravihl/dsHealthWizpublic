@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Scheduled Job Status</label>
+    <pluralLabel>Scheduled Job Statuses</pluralLabel>
+    <nameField>
+        <label>Job Name</label>
+        <type>Text</type>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <fields>
+        <fullName>Job_Type__c</fullName>
+        <label>Job Type</label>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <value>
+                    <fullName>Batch</fullName>
+                </value>
+                <value>
+                    <fullName>Scheduled</fullName>
+                    <default>true</default>
+                </value>
+                <value>
+                    <fullName>Queueable</fullName>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <label>Status</label>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <value>
+                    <fullName>Scheduled</fullName>
+                    <default>true</default>
+                </value>
+                <value>
+                    <fullName>Running</fullName>
+                </value>
+                <value>
+                    <fullName>Success</fullName>
+                </value>
+                <value>
+                    <fullName>Failed</fullName>
+                </value>
+                <value>
+                    <fullName>Aborted</fullName>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Last_Run__c</fullName>
+        <label>Last Run</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Next_Run__c</fullName>
+        <label>Next Run</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Error_Details__c</fullName>
+        <label>Error Details</label>
+        <type>LongTextArea</type>
+        <length>32768</length>
+        <visibleLines>10</visibleLines>
+    </fields>
+</CustomObject>

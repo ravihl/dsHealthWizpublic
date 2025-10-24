@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Batch Job Log</label>
+    <pluralLabel>Batch Job Logs</pluralLabel>
+    <nameField>
+        <label>Batch Name</label>
+        <type>Text</type>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <fields>
+        <fullName>Status__c</fullName>
+        <label>Status</label>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                   <fullName> Queued</fullName>
+                    <default>true</default>
+                </value>
+                <value>
+                    <fullName>Processing</fullName>
+                </value>
+                <value>
+                    <fullName>Completed</fullName>
+                </value>
+                <value>
+                    <fullName>Failed</fullName>
+                </value>
+                <value>
+                 <fullName>Aborted</fullName>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Job_Id__c</fullName>
+        <label>Job Id</label>
+        <type>Text</type>
+        <length>18</length>
+    </fields>
+    <fields>
+        <fullName>Start_Time__c</fullName>
+        <label>Start Time</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>End_Time__c</fullName>
+        <label>End Time</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Records_Processed__c</fullName>
+        <label>Records Processed</label>
+        <type>Number</type>
+        <precision>18</precision>
+        <scale>0</scale>
+    </fields>
+    <fields>
+        <fullName>Error_Message__c</fullName>
+        <label>Error Message</label>
+        <type>LongTextArea</type>
+        <length>32768</length>
+        <visibleLines>10</visibleLines>
+    </fields>
+</CustomObject>

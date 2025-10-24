@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+  <label>Storage Snapshot__c</label>
+  <pluralLabel>Storage Snapshot__cs</pluralLabel>
+  <nameField>
+    <type>Text</type>
+    <label>Name</label>
+  </nameField>
+  <deploymentStatus>Deployed</deploymentStatus>
+  <sharingModel>ReadWrite</sharingModel>
+  <fields>
+  <fullName>Object_Name__c</fullName>
+  <label>Object Name__c</label>
+  <type>Text</type>
+  <length>100</length>
+</fields>
+  <fields>
+    <fullName>Data_Storage_Used__c</fullName>
+    <label>Data Storage_Used__c</label>
+    <precision>10</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+  </fields>
+  <fields>
+    <fullName>File_Storage_Used__c</fullName>
+    <label>File Storage_Used__c</label>
+    <precision>10</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+  </fields>
+  <fields>
+    <fullName>Total_Records__c</fullName>
+    <label>Total Records__c</label>
+    <type>Text</type>
+    <length>100</length>
+  </fields>
+  <fields>
+    <fullName>Date__c</fullName>
+    <label>Date _c</label>
+    <type>Date</type>
+  </fields>
+<fields>
+    <fullName>Storage_Used_Percentage__c</fullName>
+    <label>Storage Used_Percentage__c</label>
+    <precision>10</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+  </fields>
+  <visibility>Public</visibility>
+</CustomObject>

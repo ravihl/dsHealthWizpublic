@@ -1,0 +1,63 @@
+<!-- governorLimitsMonitor.html -->
+<template>
+    <lightning-card title="Governor Limits Monitor" icon-name="utility:resource_capacity">
+        <div slot="actions">
+            <lightning-button-icon 
+                icon-name="utility:refresh" 
+                alternative-text="Refresh"
+                onclick={handleRefresh}>
+            </lightning-button-icon>
+        </div>
+
+        <div class="slds-p-around_medium">
+            <!-- Warning Banner -->
+            <template if:true={hasWarnings}>
+                <div class="slds-notify slds-notify_alert slds-alert_warning slds-m-bottom_medium">
+                    <span class="slds-assistive-text">Warning</span>
+                    <lightning-icon icon-name="utility:warning" size="x-small" variant="warning"></lightning-icon>
+                    <h2>Some governor limits are approaching their threshold!</h2>
+                </div>
+            </template>
+
+            <!-- Limits Grid -->
+            <div class="slds-grid slds-wrap slds-gutters">
+                <template for:each={limitsData} for:item="vlimit">
+                    <div key={vlimit.key} class="slds-col slds-size_1-of-2 slds-large-size_1-of-3 slds-m-bottom_medium">
+                        <article class="slds-card limit-card">
+                            <div class="slds-card__header">
+                                <h3 class="slds-text-heading_small">
+                                    <span class={vlimit.statusClass}>{vlimit.name}</span>
+                                </h3>
+                            </div>
+                            <div class="slds-card__body slds-p-around_small">
+                                <!-- Progress Bar -->
+                                <div class="slds-progress-bar slds-m-bottom_small">
+                                    <span class="slds-progress-bar__value" style={vlimit.progressWidth}>
+                                        <span class="slds-assistive-text">{vlimit.percentage}%</span>
+                                    </span>
+                                </div>
+
+                                <!-- Metrics -->
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class="slds-text-body_small slds-text-color_weak">Current</div>
+                                        <div class="slds-text-heading_medium">{vlimit.current}</div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class="slds-text-body_small slds-text-color_weak">Limit</div>
+                                        <div class="slds-text-heading_medium">{vlimit.limit}</div>
+                                    </div>
+                                </div>
+
+                                <!-- Status Badge -->
+                                <div class="slds-m-top_small">
+                                    <lightning-badge label={limit.status} class={limit.statusClass}></lightning-badge>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>

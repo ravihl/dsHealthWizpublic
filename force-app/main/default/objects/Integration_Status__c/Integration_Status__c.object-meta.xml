@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+  <label>Alert Configuration__c</label>
+  <pluralLabel>Alert Configuration__cs</pluralLabel>
+  <nameField>
+    <type>Text</type>
+    <label>Name</label>
+  </nameField>
+  <deploymentStatus>Deployed</deploymentStatus>
+  <sharingModel>ReadWrite</sharingModel>
+  <fields>
+    <fullName>Alert_Type__c</fullName>
+    <label>Alert Type__c</label>
+    <type>Text</type>
+    <length>100</length>
+  </fields>
+  <fields>
+    <fullName>Threshold_Value__c</fullName>
+    <label>Threshold Value__c</label>
+    <type>Text</type>
+    <length>100</length>
+  </fields>
+  <fields>
+    <fullName>Severity__c</fullName>
+    <label>Severity _c</label>
+    <type>Text</type>
+    <length>100</length>
+  </fields>
+  <fields>
+    <fullName>Notification_Recipients__c</fullName>
+    <label>Notification Recipients__c</label>
+    <type>Text</type>
+    <length>100</length>
+  </fields>
+  <fields>
+    <fullName>Active__c</fullName>
+    <label>Active _c</label>
+    <type>Text</type>
+    <length>50</length>
+  </fields>
+    <fields>
+    <fullName>Status__c</fullName>
+    <label>Status _c</label>
+    <type>Text</type>
+    <length>50</length>
+  </fields>
+</CustomObject>

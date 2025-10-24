@@ -1,0 +1,62 @@
+/* governorLimitsMonitor.css */
+.limit-card {
+    border-left: 4px solid #0070d2;
+    transition: all 0.3s ease;
+}
+
+.limit-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.limit-card.warning {
+    border-left-color: #ffb75d;
+}
+
+.limit-card.critical {
+    border-left-color: #c23934;
+}
+
+.slds-progress-bar {
+    height: 12px;
+    border-radius: 6px;
+}
+
+.slds-progress-bar__value {
+    background: #0070d2;
+    transition: width 0.5s ease;
+}
+
+.slds-progress-bar__value.warning {
+    background: #ffb75d;
+}
+
+.slds-progress-bar__value.critical {
+    background: #c23934;
+}
+
+.status-healthy {
+    color: #04844b;
+    font-weight: 600;
+}
+
+.status-warning {
+    color: #fe9339;
+    font-weight: 600;
+}
+
+.status-critical {
+    color: #ea001e;
+    font-weight: 600;
+}
+
+.slds-text-color_success {
+    color: #04844b !important;
+}
+
+.slds-text-color_warning {
+    color: #fe9339 !important;
+}
+
+.slds-text-color_error {
+    color: #ea001e !important;
+}

@@ -1,0 +1,78 @@
+<template>
+    <lightning-card title="Org Health Overview" icon-name="utility:dashboard">
+        <template if:true={isLoading}>
+            <div class="slds-p-around_medium">
+                <lightning-spinner size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <div class="slds-p-around_medium slds-text-color_error">
+                Error loading overview: {errorMessage}
+            </div>
+        </template>
+
+        <template if:true={hasStats}>
+            <div class="slds-p-around_medium">
+                <!-- KPI Grid -->
+                <lightning-layout multiple-rows>
+                    <!-- API Usage -->
+                    <lightning-layout-item size="6" small-device-size="12" class="slds-p-around_x-small">
+                        <div class={apiUsageClass}>
+                            <div class="metric-header">API Usage</div>
+                            <div class="metric-value">{stats.apiUsagePct}%</div>
+                            <div class="metric-label">of daily limit</div>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Storage Usage -->
+                    <lightning-layout-item size="6" small-device-size="12" class="slds-p-around_x-small">
+                        <div class={storageUsageClass}>
+                            <div class="metric-header">Storage Usage</div>
+                            <div class="metric-value">{stats.storageUsedPct}%</div>
+                            <div class="metric-label">of org limit</div>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Health Score -->
+                    <lightning-layout-item size="6" small-device-size="12" class="slds-p-around_x-small">
+                        <div class={healthScoreClass}>
+                            <div class="metric-header">Health Score</div>
+                            <div class="metric-value">{stats.healthScore}</div>
+                            <div class="metric-label">overall rating</div>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Integration Health -->
+                    <lightning-layout-item size="6" small-device-size="12" class="slds-p-around_x-small">
+                        <div class={integrationHealthClass}>
+                            <div class="metric-header">Integration Health</div>
+                            <div class="metric-value">{integrationHealthPercentage}%</div>
+                            <div class="metric-label">{stats.healthyIntegrations} of {stats.totalIntegrations} healthy</div>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+
+                <!-- Active Alerts Banner -->
+                <template if:true={stats.activeAlerts}>
+                    <div class="slds-m-top_medium">
+                        <div class="slds-notify slds-notify_alert slds-theme_warning">
+                            <lightning-icon icon-name="utility:warning" size="x-small" variant="warning"></lightning-icon>
+                            <span class="slds-m-left_x-small">
+                                {stats.activeAlerts} active alert(s) require attention
+                            </span>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Last Updated -->
+                <div class="slds-m-top_medium slds-text-color_weak slds-text-align_center">
+                    <lightning-formatted-date-time value={stats.lastUpdated} 
+                        year="numeric" month="short" day="2-digit" 
+                        hour="2-digit" minute="2-digit">
+                    </lightning-formatted-date-time>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>

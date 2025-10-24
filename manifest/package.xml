@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+    <members>Alert_Configuration__c</members>
+    <name>CustomObject</name>
+    </types>
+    <types>
+    <members>API_Usage_Log__c</members>
+    <name>CustomObject</name>
+    </types>
+    <types>
+    <members>Org_Health_Metric__c</members>
+    <name>CustomObject</name>
+    </types>
+    <types>
+    <members>Integration_Status__c</members>
+    <name>CustomObject</name>
+    </types>    
+    <types>
+    <members>Storage_Snapshot__c</members>
+    <name>CustomObject</name>
+    </types>
+    <types>
+    <members>Application_Log__c</members>
+    <name>CustomObject</name>
+    </types>
+    <version>65.0</version>
+</Package>

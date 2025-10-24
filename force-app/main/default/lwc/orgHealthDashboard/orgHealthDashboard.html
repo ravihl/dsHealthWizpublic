@@ -1,0 +1,90 @@
+<!-- orgHealthDashboard.html -->
+<template>
+    <lightning-card class="dashboard-card">
+        <!-- Header Section -->
+        <div slot="title">
+            <lightning-icon icon-name="standard:dashboard" size="small"></lightning-icon>
+            <span class="slds-m-left_small">Salesforce Org Health Monitor</span>
+        </div>
+
+        <div slot="actions">
+            <lightning-button-group>
+                <lightning-button-icon 
+                    icon-name="utility:refresh" 
+                    alternative-text="Refresh"
+                    onclick={refreshData}
+                    disabled={isLoading}>
+                </lightning-button-icon>
+                <lightning-button-icon 
+                    icon-name="utility:download" 
+                    alternative-text="Export"
+                    onclick={handleExport}>
+                </lightning-button-icon>
+                <lightning-button-icon 
+                    icon-name="utility:light_bulb" 
+                    alternative-text="Toggle Theme"
+                    onclick={toggleDarkMode}>
+                </lightning-button-icon>
+            </lightning-button-group>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="dashboard-container slds-p-around_medium">
+            <lightning-tabset variant="scoped" active-tab-value={activeTab} onselect={handleTabChange}>
+                <template for:each={ltabs} for:item="ltab">
+                    <lightning-tab key={ltab.value} id={ltab.value} label={ltab.label} value={ltab.value} icon-name={ltab.icon}>
+                        <!-- Dynamic Content Based on Active Tab -->
+                        <template if:true={ltab.value}>
+                            <div class="tab-content slds-p-around_medium">
+                                <!-- Overview Tab -->
+                                <template if:true={isOverviewTab}>
+                                    <c-overview-component></c-overview-component>
+                                </template>
+                
+                                <!-- Governor Limits Tab -->
+                                <template if:true={isLimitsTab}>
+                                    <c-governor-limits-monitor></c-governor-limits-monitor>
+                                </template>
+                
+                                <!-- API Usage Tab -->
+                                <template if:true={isAPITab}>
+                                    <c-api-usage-tracker></c-api-usage-tracker>
+                                </template>
+                
+                                <!-- Storage Tab -->
+                                <template if:true={isStorageTab}>
+                                    <c-storage-analyzer></c-storage-analyzer>
+                                </template>
+                
+                                <!-- Performance Tab -->
+                                <template if:true={isPerformanceTab}>
+                                    <c-performance-metrics></c-performance-metrics>
+                                </template>
+                
+                                <!-- Integrations Tab -->
+                                <template if:true={isIntegrationsTab}>
+                                    <c-integration-health-check></c-integration-health-check>
+                                </template>
+                
+                                <!-- Data Quality Tab -->
+                                <template if:true={isQualityTab}>
+                                    <c-data-quality-monitor></c-data-quality-monitor>
+                                </template>
+                
+                                <!-- Alerts Tab -->
+                                <template if:true={isAlertsTab}>
+                                    <c-alert-center></c-alert-center>
+                                </template>
+                            </div>
+                        </template>
+                    </lightning-tab>
+                </template>
+            </lightning-tabset>
+
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+        </div>
+    </lightning-card>
+</template>

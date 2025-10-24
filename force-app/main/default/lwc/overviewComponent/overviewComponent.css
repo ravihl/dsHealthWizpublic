@@ -1,0 +1,53 @@
+.metric-healthy {
+    background: linear-gradient(135deg, #04844b 0%, #2e844a 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.metric-warning {
+    background: linear-gradient(135deg, #ffb75d 0%, #fe9339 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.metric-critical {
+    background: linear-gradient(135deg, #ea001e 0%, #c23934 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.metric-header {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
