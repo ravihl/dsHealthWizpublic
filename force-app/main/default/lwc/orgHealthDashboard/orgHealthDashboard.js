@@ -5,20 +5,21 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class OrgHealthDashboard extends LightningElement {
     @track activeTab = 'overview';
-    @track refreshInterval = 30000; // 30 seconds
+    @track refreshInterval = 300000; // 300 seconds
     @track isDarkMode = false;
     @track isLoading = false;
 
     ltabs = [
 
-        { label: 'Overview', name: 'overview', icon: 'utility:dashboard' },
+        
         { label: 'Governor Limits', name: 'limits', icon: 'utility:resource_capacity' },
         { label: 'API Usage', name: 'api', icon: 'utility:connected_apps' },
         { label: 'Storage', name: 'storage', icon: 'utility:database' },
         { label: 'Performance', name: 'performance', icon: 'utility:chart' },
         { label: 'Integrations', name: 'integrations', icon: 'utility:integration' },
         { label: 'Data Quality', name: 'quality', icon: 'utility:check' },
-        { label: 'Alerts', name: 'alerts', icon: 'utility:notification' }
+        { label: 'Alerts', name: 'alerts', icon: 'utility:notification' },
+        { label: 'Overview', name: 'overview', icon: 'utility:page' }
     ];
 
 
@@ -87,5 +88,10 @@ export default class OrgHealthDashboard extends LightningElement {
 
     loadUserPreferences() {
         // Load user preferences from custom settings or metadata
+    }
+
+    isOverviewTab() {   
+        this.activeTab = 'overview';
+        return this.activeTab === 'overview';
     }
 }

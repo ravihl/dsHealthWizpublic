@@ -1,0 +1,25 @@
+<!--
+  @description       : Integration Health Check - surfaces Integration_Status__c records
+-->
+<template>
+    <lightning-card title="Integration Health Check" icon-name="utility:flow">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner size="small" alternative-text="Loading integrations"></lightning-spinner>
+            </template>
+
+            <template if:false={isLoading}>
+                <template if:true={hasData}>
+                    <lightning-datatable key-field="Id" data={rows} columns={columns} hide-checkbox-column></lightning-datatable>
+                </template>
+                <template if:false={hasData}>
+                    <div class="slds-text-color_weak">No integration status records found.</div>
+                </template>
+            </template>
+        </div>
+
+        <div slot="actions">
+            <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh" onclick={refresh}></lightning-button-icon>
+        </div>
+    </lightning-card>
+</template>

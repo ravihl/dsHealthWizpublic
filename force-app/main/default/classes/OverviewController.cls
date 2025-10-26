@@ -78,7 +78,19 @@ public with sharing class OverviewController {
         
         return !storageSnapshots.isEmpty() ? storageSnapshots[0].Storage_Used_Percentage__c : 0;
     }
-    
+
+    private static Storage_Snapshot__c getLatestStorageSnapshots()
+    {
+        List<Storage_Snapshot__c> storageSnapshots = [
+            SELECT Storage_Used_Percentage__c,File_Storage_Used__c,Data_Storage_Used__c
+            FROM Storage_Snapshot__c 
+            WHERE Date__c = TODAY 
+            ORDER BY CreatedDate DESC 
+            LIMIT 1
+        ];
+        
+        return !storageSnapshots.isEmpty() ? storageSnapshots[0] : null;
+    }
     /**
      * Calculate overall health score based on various metrics
      */

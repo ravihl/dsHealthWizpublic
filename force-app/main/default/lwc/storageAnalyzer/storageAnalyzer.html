@@ -1,0 +1,44 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 10-24-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-card title="Storage Usage Analyzer" icon-name="utility:database">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner size="small" alternative-text="Loading storage data"></lightning-spinner>
+            </template>
+
+            <template if:false={isLoading}>
+                <template if:true={hasData}>
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                            <lightning-formatted-number value={totalStorage} minimum-fraction-digits="2" maximum-fraction-digits="2"></lightning-formatted-number>
+                            <span> MB Used</span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-3">
+                            <lightning-progress-bar value={usagePercent} size="large"></lightning-progress-bar>
+                            <div class="slds-text-color_weak slds-m-top_x-small">{usagePercent}% of limit</div>
+                        </div>
+                    </div>
+
+                    <template if:true={snapshots.length}>
+                        <div class="slds-m-top_medium">
+                            <lightning-datatable key-field="Id" data={snapshots} columns={columns} hide-checkbox-column></lightning-datatable>
+                        </div>
+                    </template>
+                </template>
+                <template if:false={hasData}>
+                    <div class="slds-text-color_weak">No storage snapshot data available.</div>
+                </template>
+            </template>
+        </div>
+
+        <div slot="actions">
+            <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh" onclick={refresh}></lightning-button-icon>
+        </div>
+    </lightning-card>
+</template>
