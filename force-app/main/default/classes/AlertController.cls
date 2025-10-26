@@ -16,7 +16,7 @@ public with sharing class AlertController {
     @AuraEnabled(cacheable=true)
     public static List<Alert_Configuration__c> getActiveAlerts() {
         return [
-            SELECT Id, Alert_Type__c, Threshold_Value__c, Severity__c, Notification_Recipients__c, Active__c, Description__c
+            SELECT Id, Alert_Type__c, Threshold_Value__c, Severity__c, Notification_Recipients__c, Active__c
             FROM Alert_Configuration__c
             WHERE Active__c = TRUE
             ORDER BY Severity__c DESC, Alert_Type__c ASC
