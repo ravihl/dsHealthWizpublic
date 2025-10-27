@@ -1,40 +1,28 @@
-/* apiUsageTracker.css */
-.metric-card {
-    height: 100%;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.kpi-tile-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.kpi-tile {
+    background: linear-gradient(90deg, #04844b 0%, #2e844a 100%);
     color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    min-width: 320px;
+    text-align: center;
 }
-
-.metric-card:nth-child(2) {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+.kpi-label {
+    font-size: 0.95rem;
+    opacity: 0.85;
 }
-
-.metric-card:nth-child(3) {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+.kpi-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 4px 0;
 }
-
-.metric-card:nth-child(4) {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-}
-
+.kpi-warning { color: #f39c12; }
+.kpi-danger { color: #ea001e; }
+.kpi-success { color: #16a085; }
 .chart-container {
-    position: relative;
-    width: 100%;
-}
-
-.usage-healthy {
-    color: #04844b;
-}
-
-.usage-warning {
-    color: #ffb75d;
-}
-
-.usage-critical {
-    color: #c23934;
-}
-
-canvas.api-chart {
-    max-height: 300px;
+    margin-top: 2rem;
 }

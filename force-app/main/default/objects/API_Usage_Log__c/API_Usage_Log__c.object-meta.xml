@@ -15,16 +15,18 @@
     <length>100</length>
   </fields>
   <fields>
-    <fullName>Call_Count__c</fullName>
-    <label>Call Count__c</label>
-    <type>Text</type>
-    <length>100</length>
+    <fullName>Total_Calls_Used__c</fullName>
+    <label>Total Calls_Used__c</label>
+    <type>Number</type>
+    <precision>18</precision>
+    <scale>0</scale>
   </fields>
   <fields>
-    <fullName>Daily_Limit__c</fullName>
+    <fullName>Total_Org_Limit__c</fullName>
     <label>Daily Limit__c</label>
-    <type>Text</type>
-    <length>100</length>
+    <type>Number</type>
+    <precision>18</precision>
+    <scale>0</scale>
   </fields>
   <fields>
     <fullName>Percentage_Used__c</fullName>
@@ -46,6 +48,19 @@
     <label>Hour</label>
     <type>Text</type>
     <length>100</length>
+  </fields>
+  <fields>
+  <fullName>API_Client_Name__c</fullName>
+  <label>API Client Name</label>
+  <type>Text</type>
+  <length>100</length>
+  </fields>
+    <fields>
+  <fullName>Calls_Used__c</fullName>
+  <label>Calls Used</label>
+  <type>Number</type>
+  <precision>18</precision>
+  <scale>0</scale>
   </fields>
   <visibility>Public</visibility>
 </CustomObject>

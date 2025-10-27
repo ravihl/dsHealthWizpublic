@@ -1,88 +1,94 @@
-// apiUsageTracker.js
-import { LightningElement, track, wire } from 'lwc';
-import getAPIUsage from '@salesforce/apex/APIUsageService.getAPIUsageStats';
-import chartjs from '@salesforce/resourceUrl/chartjs';
-import { loadScript } from 'lightning/platformResourceLibrary';
+import { LightningElement, wire, track } from 'lwc';
+import getTodayApiSummary from '@salesforce/apex/APIUsageService.getTodayApiSummary';
+import getHourlyApiUsage from '@salesforce/apex/APIUsageService.getHourlyApiUsage';
+import getTodayApiUsageByIntegration from '@salesforce/apex/APIUsageService.getTodayApiUsageByIntegration';
 
 export default class ApiUsageTracker extends LightningElement {
-    @track apiUsageData = {};
-    @track dailyUsagePercentage = 0;
-    @track chartInitialized = false;
-    chart;
+    @track summary = null;
+    @track summaryError = undefined;
 
-    @wire(getAPIUsage)
-    wiredAPIUsage({ data, error }) {
+    @track hourly = [];
+    @track hourlyError = undefined;
+
+    @track byIntegration = [];
+    @track byIntegrationError = undefined;
+
+    columnsHourly = [
+        { label: 'Hour', fieldName: 'hour', type: 'number' },
+        { label: 'API Calls Used', fieldName: 'callsUsed', type: 'number' },
+        { label: 'Quota (%)', fieldName: 'usagePct', type: 'percent', cellAttributes:{ alignment: 'left' } }
+    ];
+
+    columnsIntegration = [
+        { label: 'Integration Client', fieldName: 'client', type: 'text' },
+        { label: 'Calls Used', fieldName: 'calls', type: 'number'}
+    ];
+
+    // KPI summary (tile)
+    @wire(getTodayApiSummary)
+    wiredSummary({ error, data }) {
         if (data) {
-            this.apiUsageData = data;
-            this.dailyUsagePercentage = (data.dailyUsed / data.dailyLimit * 100).toFixed(2);
-            this.renderChart();
+            this.summary = data;
+            this.summaryError = undefined;
         } else if (error) {
-            console.error('Error loading API usage:', error);
+            this.summary = null;
+            this.summaryError = error;
         }
     }
 
-    renderedCallback() {
-        if (this.chartInitialized) {
-            return;
+    // Hourly usage table
+    @wire(getHourlyApiUsage)
+    wiredHourly({ error, data }) {
+        if (data) {
+            this.hourly = data;
+            this.hourlyError = undefined;
+        } else if (error) {
+            this.hourly = [];
+            this.hourlyError = error;
         }
-        this.chartInitialized = true;
-
-        loadScript(this, chartjs)
-            .then(() => {
-                this.renderChart();
-            })
-            .catch(error => {
-                console.error('Error loading Chart.js:', error);
-            });
     }
 
-    renderChart() {
-        if (!this.chartInitialized || !this.apiUsageData.hourlyBreakdown) {
-            return;
+    // Per integration leaderboard
+    @wire(getTodayApiUsageByIntegration)
+    wiredIntegration({ error, data }) {
+        if (data) {
+            this.byIntegration = data;
+            this.byIntegrationError = undefined;
+        } else if (error) {
+            this.byIntegration = [];
+            this.byIntegrationError = error;
         }
-
-        const ctx = this.template.querySelector('canvas.api-chart').getContext('2d');
-
-        if (this.chart) {
-            this.chart.destroy();
-        }
-
-        this.chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: this.apiUsageData.hourlyBreakdown.map(h => h.hour),
-                datasets: [{
-                    label: 'API Calls',
-                    data: this.apiUsageData.hourlyBreakdown.map(h => h.count),
-                    borderColor: 'rgb(0, 112, 210)',
-                    backgroundColor: 'rgba(0, 112, 210, 0.1)',
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    },
-                    tooltip: {
-                        enabled: true
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
     }
 
-    get usageStatusClass() {
-        if (this.dailyUsagePercentage >= 90) return 'critical';
-        if (this.dailyUsagePercentage >= 75) return 'warning';
-        return 'healthy';
+    // Error helper for the template
+    get summaryErrorMessage() {
+        if (!this.summaryError) return '';
+        if (this.summaryError.body && typeof this.summaryError.body.message === 'string') {
+            return this.summaryError.body.message;
+        }
+        return this.summaryError.message || 'Unknown error in summary';
     }
+    get hourlyErrorMessage() {
+        if (!this.hourlyError) return '';
+        if (this.hourlyError.body && typeof this.hourlyError.body.message === 'string') {
+            return this.hourlyError.body.message;
+        }
+        return this.hourlyError.message || 'Unknown error in hourly';
+    }
+    get byIntegrationErrorMessage() {
+        if (!this.byIntegrationError) return '';
+        if (this.byIntegrationError.body && typeof this.byIntegrationError.body.message === 'string') {
+            return this.byIntegrationError.body.message;
+        }
+        return this.byIntegrationError.message || 'Unknown error in table';
+    }
+
+    get usagePctClass() {
+        if (!this.summary || !this.summary.usagePct) return 'kpi-success';
+        const pct = Number(this.summary.usagePct);
+        if (pct >= 90) return 'kpi-danger';
+        if (pct >= 75) return 'kpi-warning';
+        return 'kpi-success';
+    }
+
 }
