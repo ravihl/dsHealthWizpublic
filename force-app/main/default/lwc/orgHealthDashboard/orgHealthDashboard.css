@@ -1,0 +1,56 @@
+.dashboard-container {
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 0.25rem;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.tab-content {
+    padding: 1rem 0;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #16325c;
+    margin-bottom: 1rem;
+}
+
+.refresh-button {
+    float: right;
+    margin-bottom: 0.5rem;
+}
+
+.error-message {
+    color: #c23934;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #fafaf9;
+    border: 1px solid #c23934;
+    margin: 0.5rem 0;
+}
+
+.success-message {
+    color: #04844b;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #fafaf9;
+    border: 1px solid #04844b;
+    margin: 0.5rem 0;
+}
+
+.loading-spinner {
+    position: relative;
+    height: 4rem;
+}
+
+.dashboard-container.dark-mode {
+  background-color: #1e1e1e;
+  color: white;
+}

@@ -32,11 +32,11 @@
                             <div class="slds-card__body slds-p-around_small">
                                 <!-- Progress Bar -->
                                 <div class="slds-progress-bar slds-m-bottom_small">
-                                    <span class="slds-progress-bar__value" style={vlimit.progressWidth}>
+                                    <span class="slds-progress-bar__value" style="width: 70;">     
                                         <span class="slds-assistive-text">{vlimit.percentage}%</span>
                                     </span>
                                 </div>
-
+                                <!--{vlimit.progressWidth}>-->
                                 <!-- Metrics -->
                                 <div class="slds-grid slds-wrap">
                                     <div class="slds-col slds-size_1-of-2">
@@ -51,7 +51,7 @@
 
                                 <!-- Status Badge -->
                                 <div class="slds-m-top_small">
-                                    <lightning-badge label={limit.status} class={limit.statusClass}></lightning-badge>
+                                    <lightning-badge label={vlimit.status} class={vlimit.statusClass}></lightning-badge>
                                 </div>
                             </div>
                         </article>
