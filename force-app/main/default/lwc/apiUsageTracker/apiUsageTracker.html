@@ -1,3 +1,78 @@
+<!-- apiUsageTracker.html -->
 <template>
-    
+    <lightning-card title="API Usage Tracker" icon-name="utility:connected_apps">
+        <div class="slds-p-around_medium">
+            <!-- Summary Metrics -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-4">
+                    <article class="slds-card metric-card">
+                        <div class="slds-card__body slds-p-around_medium">
+                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Daily Usage</h3>
+                            <div class="slds-text-heading_large">{apiUsageData.dailyUsed}</div>
+                            <div class="slds-text-body_small slds-text-color_weak">
+                                of {apiUsageData.dailyLimit}
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="slds-col slds-size_1-of-4">
+                    <article class="slds-card metric-card">
+                        <div class="slds-card__body slds-p-around_medium">
+                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Usage %</h3>
+                            <div class="slds-text-heading_large">
+                                <span class={usageStatusClass}>{dailyUsagePercentage}%</span>
+                            </div>
+                            <lightning-progress-bar value={dailyUsagePercentage}></lightning-progress-bar>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="slds-col slds-size_1-of-4">
+                    <article class="slds-card metric-card">
+                        <div class="slds-card__body slds-p-around_medium">
+                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Remaining</h3>
+                            <div class="slds-text-heading_large">{apiUsageData.remaining}</div>
+                            <div class="slds-text-body_small slds-text-color_weak">calls available</div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="slds-col slds-size_1-of-4">
+                    <article class="slds-card metric-card">
+                        <div class="slds-card__body slds-p-around_medium">
+                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Peak Hour</h3>
+                            <div class="slds-text-heading_large">{apiUsageData.peakHour}</div>
+                            <div class="slds-text-body_small slds-text-color_weak">
+                                {apiUsageData.peakCalls} calls
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Usage Chart -->
+            <article class="slds-card">
+                <div class="slds-card__header">
+                    <h3 class="slds-text-heading_small">24-Hour API Usage Trend</h3>
+                </div>
+                <div class="slds-card__body slds-p-around_medium">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas class="api-chart"></canvas>
+                    </div>
+                </div>
+            </article>
+
+            <!-- API Breakdown by Type -->
+            <div class="slds-m-top_medium">
+                <lightning-datatable
+                    key-field="id"
+                    data={apiBreakdownData}
+                    columns={apiColumns}
+                    hide-checkbox-column
+                    show-row-number-column>
+                </lightning-datatable>
+            </div>
+        </div>
+    </lightning-card>
 </template>
