@@ -19,7 +19,7 @@
                 </lightning-datatable>
             </div>
         </template>
-        <template if:true={!hasResults && !isLoading && !error}>
+        <template if:true={showNoResults}>
             <div class="slds-p-around_medium">
                 <p>No performance data found for this period.</p>
             </div>

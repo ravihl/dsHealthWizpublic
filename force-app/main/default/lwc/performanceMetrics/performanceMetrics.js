@@ -28,6 +28,10 @@ export default class PerformanceMetrics extends LightningElement {
     get hasResults() {
         return this.metrics && this.metrics.length > 0;
     }
+    
+    get showNoResults() {
+        return !this.hasResults && !this.isLoading && !this.error;
+    }
 
     get errorMessage() {
         if (!this.error) return '';
