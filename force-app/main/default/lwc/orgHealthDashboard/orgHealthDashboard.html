@@ -1,63 +1,109 @@
 <!-- orgHealthDashboard.html -->
 <template>
-    <lightning-card class="dashboard-card">
+    <lightning-card class="dashboard-card" variant="narrow">
         <!-- Header Section -->
-        <div slot="title">
-            <lightning-icon icon-name="standard:dashboard" size="small"></lightning-icon>
-            <span class="slds-m-left_small">Salesforce Org Health Monitor</span>
+        <div class="slds-card__header slds-grid" slot="title">
+            <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <lightning-icon icon-name="standard:dashboard" size="small" class="slds-current-color"></lightning-icon>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span class="slds-text-heading_small">Salesforce Org Health Monitor</span>
+                    </h2>
+                </div>
+            </div>
         </div>
 
-        <div slot="actions">
+        <!-- Action Buttons -->
+        <div slot="actions" class="slds-card__header-actions">
             <lightning-button-group>
                 <lightning-button-icon 
                     icon-name="utility:refresh" 
-                    alternative-text="Refresh"
+                    alternative-text="Refresh Data"
+                    title="Reloads the latest org health metrics"
                     onclick={refreshData}
-                    disabled={isLoading}>
+                    disabled={isLoading}
+                    variant="border-filled">
                 </lightning-button-icon>
+
                 <lightning-button-icon 
                     icon-name="utility:download" 
-                    alternative-text="Export"
-                    onclick={handleExport}>
+                    alternative-text="Export Report"
+                    title="Download the current dashboard as a CSV or PDF"
+                    onclick={handleExport}
+                    variant="border-filled">
                 </lightning-button-icon>
+
                 <lightning-button-icon 
                     icon-name="utility:light_bulb" 
                     alternative-text="Toggle Theme"
-                    onclick={toggleDarkMode}>
+                    title="Switch between light and dark mode"
+                    onclick={toggleDarkMode}
+                    variant="border-filled">
                 </lightning-button-icon>
             </lightning-button-group>
         </div>
 
+
         <!-- Tab Navigation -->
-   <lightning-tabset variant="scoped" active-tab-value={activeTab}>
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning-tabset variant="scoped" active-tab-value={activeTab}>
                 <template for:each={ltabs} for:item="ltab">
                     <lightning-tab key={ltab.name} id={ltab.name} label={ltab.label} value={ltab.name} icon-name={ltab.icon} onactive={handleTabChange}>
                         <!-- Dynamic Content Based on Active Tab -->
                     </lightning-tab>
                 </template>
-    </lightning-tabset>
-    <!-- Tab Content Area -->
-        <div class="tab-content slds-p-around_medium">
-            <template if:true={activeComponent}>
-                <!-- Dynamically render component based on active tab -->
-                <template if:true={isOverviewTab}>
-                    <c-overview-component></c-overview-component>
+            </lightning-tabset>
+
+            <!-- Tab Content Area -->
+            <div class="tab-content slds-m-top_medium">
+                <!-- Loading State -->
+                <template if:true={isLoading}>
+                    <div class="slds-align_absolute-center slds-p-vertical_xx-large">
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                        <div class="slds-m-top_small">Loading {activeTabLabel}...</div>
+                    </div>
                 </template>
-                <template if:true={isLimitsTab}>
-                    <c-governor-limits-monitor></c-governor-limits-monitor>
+
+                <!-- Dynamic Content -->
+                <template if:false={isLoading}>
+                    <template if:true={isOverviewTab}>
+                        <c-overview-component ondatarefresh={refreshData}></c-overview-component>
+                    </template>
+                    <template if:true={isLimitsTab}>
+                        <c-governor-limits-monitor ondatarefresh={refreshData}></c-governor-limits-monitor>
+                    </template>
+                    <template if:true={isApiTab}>
+                        <c-api-usage-tracker ondatarefresh={refreshData}></c-api-usage-tracker>
+                    </template>
+                    <template if:true={isStorageTab}>
+                        <c-storage-analyzer ondatarefresh={refreshData}></c-storage-analyzer>
+                    </template>
+                    <template if:true={isPerformanceTab}>
+                        <c-performance-metrics ondatarefresh={refreshData}></c-performance-metrics>
+                    </template>
+                    <template if:true={isIntegrationsTab}>
+                        <c-integration-health-check ondatarefresh={refreshData}></c-integration-health-check>
+                    </template> 
+                    <template if:true={isDataQualityTab}>
+                        <c-data-quality-monitor ondatarefresh={refreshData}></c-data-quality-monitor>
+                    </template>
+                    <template if:true={isAlertsTab}>
+                        <c-alert-center ondatarefresh={refreshData}></c-alert-center>
+                    </template>
+                    <template if:true={isSettingsTab}>
+                        <c-dashboard-settings onsettingschange={handleSettingsChange}></c-dashboard-settings>
+                    </template>
                 </template>
-                <template if:true={isApiTab}>
-                    <c-api-usage-tracker></c-api-usage-tracker>
-                </template>
-                <template if:true={isStorageTab}>
-                    <c-storage-analyzer></c-storage-analyzer>
-                </template>  
-            </template>
+            </div>
         </div>
 
-            <!-- Loading Spinner -->
-            <template if:true={isLoading}>
-                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
-            </template>
+        <!-- Last Updated Footer -->
+        <div slot="footer" class="slds-card__footer">
+            <div class="slds-text-body_small slds-text-color_weak">
+                Last updated: {lastUpdated}
+            </div>
+        </div>
     </lightning-card>
 </template>
