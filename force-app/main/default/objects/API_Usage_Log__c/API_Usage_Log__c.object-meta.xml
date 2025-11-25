@@ -28,6 +28,13 @@
     <precision>18</precision>
     <scale>0</scale>
   </fields>
+<fields>
+    <fullName>API_Count__c</fullName>
+    <label>API Count</label>
+    <type>Number</type>
+    <precision>18</precision>
+    <scale>0</scale>
+  </fields>
   <fields>
     <fullName>Percentage_Used__c</fullName>
     <label>Percentage Used__c</label>
