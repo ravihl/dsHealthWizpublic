@@ -24,13 +24,34 @@
             </template>
             <template if:true={hourly}>
                 <lightning-datatable
-                    key-field="hour"
+                    key-field="id"
                     data={hourly}
                     columns={columnsHourly}
                     hide-checkbox-column>
                 </lightning-datatable>
             </template>
         </div>
+    
+                
+        <!-- Monthly API Usage Table -->
+<div class="slds-m-top_medium">
+    <h3 class="slds-text-title_bold">Monthly API Usage</h3>
+
+    <template if:true={monthlyError}>
+        <div class="slds-text-color_error">
+            Monthly Usage Error: {monthlyError.message}
+        </div>
+    </template>
+
+    <template if:true={monthly}>
+        <lightning-datatable
+            key-field="month"
+            data={monthlyTableData}
+            columns={columnsMonthly}
+            hide-checkbox-column>
+        </lightning-datatable>
+    </template>
+</div>
 
         <!-- By Integration Table -->
         <div class="slds-m-top_medium">
