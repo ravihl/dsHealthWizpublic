@@ -1,14 +1,41 @@
-/**
- * @description
- *   APIUsageService
- *   Enterprise analytics for API usage reporting: daily, hourly, and per-integration.
- */
 public with sharing class APIUsageService {
+	
+    @future(callout=true)
+    public static void logCurrentUsage() {
+       try {
+            HttpRequest req = new HttpRequest();
+            req.setEndpoint(System.URL.getOrgDomainUrl().toExternalForm() + '/services/data/v61.0/limits');
+            req.setMethod('GET');
+            req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
 
-    /**
-     * Get past 24 hours' API usage (one row per hour).
-     * For trend charts and monitoring.
-     */
+            Http http = new Http();
+            HttpResponse res = http.send(req);
+
+            if (res.getStatusCode() == 200) {
+                Map<String, Object> limits = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+                Map<String, Object> apiLimits = (Map<String, Object>) limits.get('DailyApiRequests'); 
+                
+                Decimal max = (Decimal) apiLimits.get('Max');
+        	    Decimal remaining = (Decimal) apiLimits.get('Remaining');
+                Decimal used = max - remaining;
+                Decimal pct = (max > 0) ? (used / max * 100) : 0;
+				
+                
+                insert new API_Usage_Log__c(
+                    Date__c = Date.today(),
+                    Hour__c = String.valueOf(Datetime.now().hour()),
+                    Total_Calls_Used__c = used,
+                    Total_Org_Limit__c = max,
+                    Percentage_Used__c = pct.setScale(2)
+                );
+            } else {
+                System.debug('Tooling API call failed: ' + res.getStatusCode() + ' ' + res.getBody());
+            }
+        } catch (Exception e) {
+            System.debug('Error in Tooling API usage logger: ' + e.getMessage());
+        }
+    }
+                      
     @AuraEnabled(cacheable=true)
     public static List<Map<String, Object>> getHourlyApiUsage() {
         List<Map<String, Object>> result = new List<Map<String, Object>>();
@@ -16,7 +43,7 @@ public with sharing class APIUsageService {
             SELECT Id, Date__c, Hour__c, Total_Calls_Used__c, Total_Org_Limit__c, Percentage_Used__c
             FROM API_Usage_Log__c
             WHERE Date__c = TODAY
-            ORDER BY Hour__c ASC
+            ORDER BY Hour__c ASC LIMIT 10
         ];
         for (API_Usage_Log__c log : logs) {
             result.add(new Map<String, Object>{
@@ -77,6 +104,75 @@ public with sharing class APIUsageService {
         }
         return result;
     }
+    
+   		 @AuraEnabled(cacheable=true)
+    //MOnthly limit from UsageEntitlement - API Request per month
+public static Decimal getMonthlyApiLimit() {
+    HttpRequest req = new HttpRequest();
+    req.setEndpoint(URL.getOrgDomainUrl().toExternalForm() + '/services/data/v61.0/limits/usage');
+    req.setMethod('GET');
+    req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
+
+    Http http = new Http();
+    HttpResponse res = http.send(req);
+
+    if (res.getStatusCode() == 200) {
+        List<Object> items = (List<Object>) JSON.deserializeUntyped(res.getBody());
+
+        for (Object o : items) {
+            Map<String, Object> item = (Map<String, Object>) o;
+
+            // Look for Monthly API Entitlement
+            if (
+                item.get('name') == 'ApiRequests' &&
+                item.get('periodType') == 'Monthly'
+            ) {
+                return (Decimal) item.get('max');
+            }
+        }
+    }
+
+    return 0;
+} 
+    
+    
+    @AuraEnabled(cacheable=true)
+    public static List<MonthlyUsageWrapper> getMonthlyUsageHistory() {
+
+        Date startDate = Date.today().addDays(-30);
+
+        List<AggregateResult> results = [
+            SELECT Date__c d, SUM(Total_Calls_Used__c) total
+            FROM API_Usage_Log__c
+            WHERE Date__c >= :startDate
+            GROUP BY Date__c
+            ORDER BY Date__c
+        ];
+
+        Decimal monthlyLimit = getMonthlyApiLimit();
+        List<MonthlyUsageWrapper> response = new List<MonthlyUsageWrapper>();
+
+        for (AggregateResult ar : results) {
+            MonthlyUsageWrapper w = new MonthlyUsageWrapper();
+            w.month = ((Date) ar.get('d')).format();
+            w.used = (Decimal) ar.get('total');
+            w.monthlyLimit = monthlyLimit;
+            w.usagePct = (monthlyLimit > 0) ? (w.used / monthlyLimit * 100) : 0;
+
+            response.add(w);
+        }
+        return response;
+    }
+
+
+    public class MonthlyUsageWrapper {
+        @AuraEnabled public String month;
+        @AuraEnabled public Decimal used;
+        @AuraEnabled public Decimal monthlyLimit;
+        @AuraEnabled public Decimal usagePct;
+    }
+
+
 
     /**
      * Get today's summary for dashboard KPI display.
@@ -92,12 +188,16 @@ public with sharing class APIUsageService {
         Decimal used = (Decimal) ar.get('used');
         Decimal vlimit = (Decimal) ar.get('vlimit');
         Decimal pct = (vlimit > 0 ? used / vlimit * 100 : 0);
+      //  Decimal monthlyLimit = getMonthlyApiLimit();
+      //  Decimal monthlyLimit = getMonthlyApiLimit() * 30;
+
+
         Map<String, Object> summary = new Map<String, Object>();
         summary.put('callsUsed', used);
         summary.put('orgLimit', vlimit);
         summary.put('usagePct', pct.setScale(2));
+        summary.put('monthlyLimit', getMonthlyApiLimit());  
         return summary;
     }
 
-    // Retain getDailyApiTrends from previous version if you want 30-day history!
-}
+    }
