@@ -1,78 +1,151 @@
-import { LightningElement, wire, track } from "lwc";
-import getLatestStorageSnapshots from '@salesforce/apex/StorageAnalyzerController.getLatestStorageSnapshots';
+import { LightningElement, wire, track } from 'lwc'; 
 
-export default class StorageAnalyzer extends LightningElement {
-  @track snapshots = [];
-  @track isLoading = false;
+import captureTop10DataStorageUsage from '@salesforce/apex/StorageAnalyzerController.captureTop10DataStorageUsage'; 
 
-  totalStorage = 0;
-  usagePercent = 0;
+import getLatestDataStorageUsage from '@salesforce/apex/StorageAnalyzerController.getLatestDataStorageUsage'; 
 
-  columns = [
-    { label: "Snapshot Date", fieldName: "Date__c", type: "date" },
-    { label: "Data Storage (MB)", fieldName: "Data_Storage_Used__c", type: "number" },
-    { label: "File Storage (MB)", fieldName: "File_Storage_Used__c", type: "number" },
-    { label: "Total (MB)", fieldName: "TotalMB__c", type: "number" },
-    { label: "Percent Used", fieldName: "Storage_UsedP_ercentage__c", type: "percent" }
-  ];
+import getOverallDataStorageUsage from '@salesforce/apex/StorageAnalyzerController.getOverallDataStorageUsage'; 
 
-  connectedCallback() {
-    this.refresh();
-  }
+import { refreshApex } from '@salesforce/apex'; 
 
-  @wire(getLatestStorageSnapshots)
-  wiredSnapshots({ data, error }) {
-    if (data) {
-      this.processData(data);
-    } else if (error) {
-      // eslint-disable-next-line no-console
-      console.error("StorageAnalyzer wire error", error);
-    }
-  }
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'; 
 
-  processData(data) {
-    const rows = (data || []).map((d) => ({
-      ...d,
-      TotalMB__c: (Number(d.Data_Storage_Used__c || 0) + Number(d.File_Storage_Used__c || 0)).toFixed(2),
-      PercentUsed__c: Number(d.Storage_Used_Percentage__c || 0) / 100
-    }));
+ 
 
-    this.snapshots = rows;
+const COLUMNS = [ 
 
-    const totals = rows.reduce(
-      (acc, r) => {
-        acc.total += Number(r.TotalMB__c);
-        return acc;
-      },
-      { total: 0 }
-    );
+    { label: 'Object Name', fieldName: 'Object_Name__c', type: 'text' }, 
 
-    this.totalStorage = totals.total.toFixed(2);
+    { label: 'Record Count', fieldName: 'Record_Count__c', type: 'number' }, 
 
-    // If snapshots contain org limit info, compute usagePercent, else 0
-    const latest = rows[0];
-    if (latest && latest.OrgLimitMB__c) {
-      const pct = (Number(latest.TotalMB__c) / Number(latest.OrgLimitMB__c)) * 100;
-      this.usagePercent = Math.min(100, Math.max(0, Number(pct.toFixed(2))));
-    } else {
-      this.usagePercent = 0;
-    }
-  }
+    { label: 'Storage Used (KB)', fieldName: 'Data_Storage_Used__c', type: 'number' }, 
 
-  get hasData() {
-    return (this.snapshots || []).length > 0;
-  }
+    { label: 'Percent Used', fieldName: 'Storage_Used_Percentage__c', type: 'percent' }, 
 
-  get isLoadingClass() {
-    return this.isLoading ? "slds-hide" : "";
-  }
+    { label: 'Date', fieldName: 'Date__c', type: 'date' } 
 
-  refresh() {
-    this.isLoading = true;
-    // Imperative refresh to re-invoke wire by toggling a tracked property or leveraging refreshApex if stored
-    // For now, simply flip loading state; real refresh should use refreshApex with wired result
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 400);
-  }
-}
+]; 
+
+ 
+
+export default class DataStorageUsage extends LightningElement { 
+
+    @track data; 
+
+    @track error; 
+
+    @track overallUsage = {}; 
+
+    columns = COLUMNS; 
+
+    wiredResult; 
+
+ 
+
+   @wire(getLatestDataStorageUsage) 
+    wiredSnapshots(result) { 
+
+        this.wiredResult = result; 
+
+        if (result.data) { 
+
+            this.data = result.data; 
+
+            this.error = undefined; 
+
+        } else if (result.error) { 
+
+            this.error = result.error; 
+
+        } 
+
+    }  
+
+    @wire(getOverallDataStorageUsage) 
+    wiredOverall(result) { 
+        if (result.data) { 
+            this.overallUsage = result.data; 
+        } else if (result.error) { 
+           console.error(result.error); 
+        } 
+    } 
+
+ 
+
+    async handleCapture() { 
+
+        try { 
+
+            await captureTop10DataStorageUsage(); 
+
+            this.dispatchEvent( 
+
+                new ShowToastEvent({ 
+
+                    title: 'Success', 
+
+                    message: 'Top-10 Data Storage snapshot captured successfully.', 
+
+                    variant: 'success' 
+
+                }) 
+
+            ); 
+
+            await refreshApex(this.wiredResult); 
+
+        } catch (error) { 
+
+            this.dispatchEvent( 
+
+                new ShowToastEvent({ 
+
+                    title: 'Error', 
+
+                    message: error.body ? error.body.message : error.message, 
+
+                    variant: 'error' 
+
+                }) 
+
+            ); 
+
+        } 
+
+    } 
+
+    get percentUsed() { 
+
+    return this.overallUsage?.percentUsed 
+
+        ? Math.round(this.overallUsage.percentUsed) 
+
+        : 0; 
+
+} 
+
+ 
+
+get totalUsedMB() { 
+
+        return this.overallUsage?.totalUsedMB 
+
+            ? this.overallUsage.totalUsedMB.toFixed(2) 
+
+            : 0; 
+
+    } 
+
+ 
+
+    get orgLimitMB() { 
+
+        return this.overallUsage?.orgLimitMB 
+
+            ? this.overallUsage.orgLimitMB 
+
+            : 0; 
+
+    } 
+
+} 
