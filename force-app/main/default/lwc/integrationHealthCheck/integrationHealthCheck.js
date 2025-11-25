@@ -7,11 +7,11 @@ export default class IntegrationHealthCheck extends LightningElement {
   @track isLoading = false;
 
   columns = [
-    { label: "Name", fieldName: "Name", type: "text" },
+    { label: "Name", fieldName: "integrationName", type: "text" },
     { label: "System", fieldName: "System__c", type: "text" },
-    { label: "Status", fieldName: "Status__c", type: "badge" },
-    { label: "Last Checked", fieldName: "Last_Checked__c", type: "date" },
-    { label: "Message", fieldName: "Message__c", type: "text" }
+    { label: "Status", fieldName: "status", type: "badge" },
+    { label: "Last Checked", fieldName: "lastSuccess", type: "date" },
+    { label: "Message", fieldName: "notes", type: "text" }
   ];
 
   connectedCallback() {
