@@ -1,6 +1,8 @@
 import { LightningElement, wire, track } from 'lwc';
 import getTodayApiSummary from '@salesforce/apex/APIUsageService.getTodayApiSummary';
 import getHourlyApiUsage from '@salesforce/apex/APIUsageService.getHourlyApiUsage';
+//import getMonthlyUsageHistory from '@salesforce/apex/APIUsageService.getMonthlyUsageHistory';
+import getMonthlyApiLimit from '@salesforce/apex/APIUsageService.getMonthlyApiLimit';
 import getTodayApiUsageByIntegration from '@salesforce/apex/APIUsageService.getTodayApiUsageByIntegration';
 
 export default class ApiUsageTracker extends LightningElement {
@@ -13,6 +15,9 @@ export default class ApiUsageTracker extends LightningElement {
     @track byIntegration = [];
     @track byIntegrationError = undefined;
 
+    @track monthly = [];
+    @track monthlyError = undefined;
+
     columnsHourly = [
         { label: 'Hour', fieldName: 'hour', type: 'number' },
         { label: 'API Calls Used', fieldName: 'callsUsed', type: 'number' },
@@ -22,6 +27,13 @@ export default class ApiUsageTracker extends LightningElement {
     columnsIntegration = [
         { label: 'Integration Client', fieldName: 'client', type: 'text' },
         { label: 'Calls Used', fieldName: 'calls', type: 'number'}
+    ];
+
+    columnsMonthly = [
+    { label: 'Date', fieldName: 'month', type: 'text' },
+    { label: 'Monthly Limit', fieldName: 'monthlyLimit', type: 'number' },
+    { label: 'Used', fieldName: 'used', type: 'number' },
+    { label: 'Used (%)', fieldName: 'usagePct', type: 'percent' }
     ];
 
     // KPI summary (tile)
@@ -47,7 +59,17 @@ export default class ApiUsageTracker extends LightningElement {
             this.hourlyError = error;
         }
     }
-
+    // Monthly 
+    @wire(getMonthlyApiLimit)
+wiredMonthly({ error, data }) {
+    if (data) {
+        this.monthly = data;
+        this.monthlyError = undefined;
+    } else if (error) {
+        this.monthly = [];
+        this.monthlyError = error;
+    }
+}
     // Per integration leaderboard
     @wire(getTodayApiUsageByIntegration)
     wiredIntegration({ error, data }) {
@@ -82,6 +104,11 @@ export default class ApiUsageTracker extends LightningElement {
         }
         return this.byIntegrationError.message || 'Unknown error in table';
     }
+    get monthlyTableData() {
+    return this.monthly
+        ? [this.monthly]   // convert to array for datatable
+        : [];
+}
 
     get usagePctClass() {
         if (!this.summary || !this.summary.usagePct) return 'kpi-success';
