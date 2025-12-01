@@ -1,0 +1,4 @@
+.cell-green { background-color: #dff0d8; }
+.cell-yellow { background-color: #fcf8e3; }
+.cell-red { background-color: #f2dede; }
+.heatmap-table th, .heatmap-table td { text-align: center; }

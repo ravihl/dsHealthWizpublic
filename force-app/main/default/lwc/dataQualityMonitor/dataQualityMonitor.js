@@ -9,7 +9,7 @@ export default class DataQualityMonitor extends LightningElement {
     columns = [
         { label: 'Object', fieldName: 'objectApiName', type: 'text' },
         { label: 'Field', fieldName: 'fieldApiName', type: 'text' },
-        { label: 'Completeness (%)', fieldName: 'completeness', type: 'percent', cellAttributes: { alignment: 'left' } },
+        { label: 'Record Count', fieldName: 'completeness', type: 'number', cellAttributes: { alignment: 'left' } },
         { label: 'Analysis Date', fieldName: 'analysisDate', type: 'date-local' },
         { label: 'Notes', fieldName: 'notes', type: 'text' }
     ];
@@ -19,6 +19,7 @@ export default class DataQualityMonitor extends LightningElement {
         this.isLoading = false;
         if (data) {
             this.metrics = data;
+            
             this.error = undefined;
         } else if (error) {
             this.error = error;

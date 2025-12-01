@@ -1,0 +1,18 @@
+<template>
+    <lightning-card title="Data Quality Monitor">
+        
+        <!-- DATATABLE -->
+        <lightning-datatable
+            key-field="id"
+            data={records}
+            columns={columns}>
+        </lightning-datatable>
+
+        <!-- CHART -->
+        <div class="slds-m-top_large slds-p-around_medium">
+            <h2 class="slds-text-heading_medium">Data Quality Bar Chart</h2>
+            <canvas lwc:dom="manual" class="dqChart"></canvas>
+        </div>
+
+    </lightning-card>
+</template>

@@ -1,0 +1,28 @@
+<template>
+    <lightning-card>
+        <div class="slds-grid slds-wrap slds-grid_align-spread slds-p-around_small">
+            <template if:true={isLoading}>
+                <div class="slds-col slds-size_1-of-1">
+                    <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:false={isLoading}>
+                <div class="slds-col slds-size_1-of-3 kpi-tile">
+                    <div class="tile-title">Invalid Emails (Today)</div>
+                    <div class="tile-value">{invalidEmails}</div>
+                </div>
+                <div class="slds-col slds-size_1-of-3 kpi-tile">
+                    <div class="tile-title">Missing Required (Today)</div>
+                    <div class="tile-value">{missingRequired}</div>
+                </div>
+                <div class="slds-col slds-size_1-of-3 meta">
+                    <div class="meta-line">Analysis Date: <strong>{analysisDate}</strong></div>
+                    <div class="meta-line slds-m-top_small">
+                        <lightning-button label="Refresh" title="Refresh" onclick={refresh} variant="neutral" size="small"></lightning-button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,36 @@
+<template>
+    <lightning-card title="Data Quality Heatmap">
+        <div class="slds-p-around_small">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+
+            <template if:false={isLoading}>
+                <table class="heatmap slds-table slds-table_cell-buffer">
+                    <thead>
+                        <tr>
+                            <th>Object</th>
+                            <template for:each={metrics} for:item="m">
+                                <th key={m}>{m}</th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={objects} for:item="obj">
+                            <tr key={obj}>
+                                <td><strong>{obj}</strong></td>
+                                <template for:each={metrics} for:item="metric">
+                                    <td key={obj} class={cellClass} data-object={obj} data-metric={metric}
+                                        onclick={onCellClick}>
+                                        {cellValue}
+                                    </td>
+
+                                </template>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </template>
+        </div>
+    </lightning-card>
+</template>

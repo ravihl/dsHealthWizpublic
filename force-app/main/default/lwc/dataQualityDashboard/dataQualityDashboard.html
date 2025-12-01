@@ -1,0 +1,23 @@
+<template>
+    <lightning-card title="Data Quality Dashboard">
+        <div class="slds-p-around_medium">
+            <div class="slds-grid slds-wrap slds-grid_vertical-align-center slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1">
+                    <c-dq-kpi-tiles onrefresh={handleRefresh}></c-dq-kpi-tiles>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-grid_pull-padded">
+                <div class="slds-col slds-size_1-of-2 slds-p-horizontal_small">
+                    <c-dq-heatmap oncellclick={handleCellClick} metrics={metrics}></c-dq-heatmap>
+                </div>
+                <!--div class="slds-col slds-size_1-of-2 slds-p-horizontal_small">
+                    <c-dq-trend-chart days-back="30" class="trend"></c-dq-trend-chart>
+                    <div class="slds-m-top_medium">
+                        <c-dq-drilldown-modal aura:id="drill" ></c-dq-drilldown-modal>
+                    </div>
+                </div-->
+            </div>
+        </div>
+    </lightning-card>
+</template>

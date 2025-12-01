@@ -1,0 +1,40 @@
+<template>
+    <lightning-card title="Data Quality Heatmap" icon-name="utility:analytics">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+
+            <template if:true={metrics}>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered heatmap-table">
+                    <thead>
+                        <tr>
+                            <th>Object</th>
+                            <th>Missing Required</th>
+                            <th>Invalid Emails</th>
+                            <th>Invalid Phones</th>
+                            <th>Duplicate Emails</th>
+                            <th>Duplicate Phones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={metrics} for:item="row">
+                            <tr key={row.objectApiName}>
+                                <td>{row.objectApiName}</td>
+                                <td class={row.missingClass}>{row.missingRequired}</td>
+                                <td class={row.invalidEmailClass}>{row.invalidEmails}</td>
+                                <td class={row.invalidPhoneClass}>{row.invalidPhones}</td>
+                                <td class={row.dupEmailClass}>{row.duplicateEmails}</td>
+                                <td class={row.dupPhoneClass}>{row.duplicatePhones}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </template>
+
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-m-top_small">{errorMessage}</div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

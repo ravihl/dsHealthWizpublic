@@ -1,0 +1,28 @@
+<template>
+    <lightning-card title="Data Quality">
+
+        <!-- Counts Section -->
+        <div class="slds-m-around_medium">
+            <p><b>Total rows displayed:</b> {rowCount}</p>
+
+            <template if:true={objectCounts}>
+                <p><b>Count per Object:</b></p>
+                <template for:each={objectCounts} for:item="item">
+                    <p key={item.object}>{item.object}: {item.count}</p>
+                </template>
+            </template>
+        </div>
+
+        <!-- Table Wrapper For Scroll -->
+        <div class="table-wrapper">
+            <lightning-datatable
+                key-field="Id"
+                data={data}
+                columns={columns}
+                hide-checkbox-column="true"
+                resize-column-disabled="true">
+            </lightning-datatable>
+        </div>
+
+    </lightning-card>
+</template>

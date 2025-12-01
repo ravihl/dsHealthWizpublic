@@ -19,9 +19,9 @@ public with sharing class DataQualityService {
     public static List<Map<String, Object>> getDataQualityScores() {
         // Tune the WHERE clause for your use case - e.g., scores from last 30 days.
         List<Data_Quality_Score__c> scores = [
-            SELECT Id, Object_Name__c, Field__c, Score__c, Analysis_Date__c, Notes__c
+            SELECT Id, Object_Name__c, Field__c, Score__c,	Record_Count__c, Analysis_Date__c, Notes__c
             FROM Data_Quality_Score__c
-            ORDER BY Object_Name__c, Field__c
+            ORDER BY CreatedDate DESC
         ];
 
         List<Map<String, Object>> result = new List<Map<String, Object>>();
@@ -30,9 +30,12 @@ public with sharing class DataQualityService {
                 'id'             => s.Id,
                 'objectApiName'  => s.Object_Name__c,
                 'fieldApiName'   => s.Field__c,
-                'completeness'   => s.Score__c,           // assume Score__c is percent (0-100)
+                'completeness'   => s.Record_Count__c,           // assume Score__c is percent (0-100)
                 'analysisDate'   => s.Analysis_Date__c,
                 'notes'          => s.Notes__c
+                
+                    
+                    
             });
         }
         return result;

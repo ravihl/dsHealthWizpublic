@@ -1,0 +1,10 @@
+.table-wrapper {
+    overflow-x: auto;
+    max-height: 400px;   /* Vertical scroll */
+    overflow-y: auto;
+}
+
+/* No wrapping for record ID */
+.no-wrap {
+    white-space: nowrap !important;
+}
