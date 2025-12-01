@@ -1,0 +1,102 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Data_Quality_Config__mdt",
+                "referenceId": "Data_Quality_Config__mdtRef1"
+            },
+            "CheckType__c": "searchForDuplicate",
+            "DeveloperName": "Set_1",
+            "FieldName__c": "Email",
+            "MasterLabel": "Set 1",
+            "Object_API_Name__c": "Lead"
+        },
+        {
+            "attributes": {
+                "type": "Data_Quality_Config__mdt",
+                "referenceId": "Data_Quality_Config__mdtRef2"
+            },
+            "CheckType__c": "searchForDuplicate",
+            "DeveloperName": "Set_2",
+            "FieldName__c": "Phone",
+            "MasterLabel": "Set 2",
+            "Object_API_Name__c": "Lead"
+        },
+        {
+            "attributes": {
+                "type": "Data_Quality_Config__mdt",
+                "referenceId": "Data_Quality_Config__mdtRef3"
+            },
+            "CheckType__c": "searchForDuplicate",
+            "DeveloperName": "Set_3",
+            "FieldName__c": "Email",
+            "MasterLabel": "Set 3",
+            "Object_API_Name__c": "Contact"
+        },
+        {
+            "attributes": {
+                "type": "Data_Quality_Config__mdt",
+                "referenceId": "Data_Quality_Config__mdtRef4"
+            },
+            "CheckType__c": "searchForDuplicate",
+            "DeveloperName": "Set_4",
+            "FieldName__c": "Phone",
+            "MasterLabel": "Set 4",
+            "Object_API_Name__c": "Contact"
+        },
+        {
+            "attributes": {
+                "type": "Data_Quality_Config__mdt",
+                "referenceId": "Data_Quality_Config__mdtRef5"
+            },
+            "CheckType__c": "runReqFieldChecks",
+            "DeveloperName": "Set_5",
+            "MasterLabel": "Set 5",
+            "Object_API_Name__c": "Case"
+        },
+        {
+            "attributes": {
+                "type": "Data_Quality_Config__mdt",
+                "referenceId": "Data_Quality_Config__mdtRef6"
+            },
+            "CheckType__c": "runReqFieldChecks",
+            "DeveloperName": "Set_6",
+            "MasterLabel": "Set 6",
+            "Object_API_Name__c": "Opportunity"
+        },
+        {
+            "attributes": {
+                "type": "Data_Quality_Config__mdt",
+                "referenceId": "Data_Quality_Config__mdtRef7"
+            },
+            "CheckType__c": "runReqFieldChecks",
+            "DeveloperName": "Set_7",
+            "MasterLabel": "Set 7",
+            "Object_API_Name__c": "Account"
+        },
+        {
+            "attributes": {
+                "type": "Data_Quality_Config__mdt",
+                "referenceId": "Data_Quality_Config__mdtRef8"
+            },
+            "CheckType__c": "runEmailandPhoneChecks",
+            "DeveloperName": "Set_8",
+            "EmailFieldAPINames__c": "Email",
+            "PhonefieldAPIName__c": "Phone",
+            "MasterLabel": "Set 8",
+            "Object_API_Name__c": "Lead"
+        },
+        {
+            "attributes": {
+                "type": "Data_Quality_Config__mdt",
+                "referenceId": "Data_Quality_Config__mdtRef9"
+            },
+            "CheckType__c": "runEmailandPhoneChecks",
+            "DeveloperName": "Set_9",
+            "EmailFieldAPINames__c": "Email",
+            "PhonefieldAPIName__c": "Phone",
+            "MasterLabel": "Set 9",
+            "Object_API_Name__c": "Contact"
+        }
+    ]
+}
